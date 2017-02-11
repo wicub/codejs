@@ -14,6 +14,7 @@ Structure
 >>>>js
 >>>>>lib
 >>>>>>main.js(Public js)
+
 >>>>>modules
 >>>>>>Dist
 >>>>>>>Meici.js(The project js)

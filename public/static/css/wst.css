@@ -1,0 +1,55 @@
+.table td, .table th {vertical-align:middle; line-height:none;}
+.table > thead > tr > th {vertical-align:middle;}
+.proSPUinfo {}
+.prodatatable>tbody>tr:first-child>td.pointer {display:none;}
+.prodatatable th {background:#f5f5f5; padding:10px 0;}
+.skutable tr:last-child td {border:none;}
+.prodatatable th, .prodatatable td {vertical-align:middle;}
+.proSPUinfo_btn a {margin:0 3px;}
+.proSPUinfo {text-align:left; line-height:2; padding:5px 0;}
+.proSPUclose_m {height:68px; overflow:hidden;}
+
+#product_add_tbody th, #product_add_tbody td {padding:15px 0;}
+
+
+/* 打印 */
+#print_order {margin:10px; font-family:'微软雅黑'; font-size:8px; -webkit-text-size-adjust:none;}
+.head_p {margin:15px 0;}
+.print_page {width:620px; height:25.1cm; line-height:2; position:relative;}
+.border_double {margin:8px 0; padding:10px; border:double 4px #999; border-left:none; border-right:none;}
+.border_double .pull-left,.address_p .pull-left {width:280px; padding-right:20px;}
+.code_p {padding:10px; border-top:solid 1px #999; text-align:right;}
+.address_p {margin:8px 0; padding:10px 0;}
+.p_title {padding-left:10px; line-height:3; border-bottom:solid 1px #999;}
+.ads {padding:10px;}
+.product_p {padding-bottom:10px; line-height:3; border-bottom:solid 1px #999;}
+.product_p td,.balance_p td {text-align:center;}
+td.price_p {text-align:left;}
+span.sp {padding-left:5px;}
+.bottom_p {width:100%; bottom:50px; left:0;}
+
+.proTable {width:700px; margin:0 auto;}
+.proTable_m {margin-bottom:10px;}
+.proTable_tit {border:solid 1px #eee; padding:10px 0;}
+.proTable th, .proTable td {text-align:center; border:1px solid #eee; padding:5px 0; font-size:8px;}
+.proTable th {background:#eee; color:#333; font-weight:bold;}
+.proTable_bdn td, .proTable_bdn td {border:none; text-align:left;}
+.proTable_order {padding:7px 0 0 15px;}
+.barcodeImg {transform:scale(.7); position:relative; left:-50px;}
+
+/* 首页 */
+.index_left {width:75%;}
+.index_right {width:24%;}
+.index_left .container-fluid, .index_right .container-fluid {padding:10px 15px; border:solid 1px #ddd; margin-bottom:15px;}
+.pubtit {font-size:14px; border-bottom:solid 1px #ddd; padding:0 0 7px 0; font-weight:bold;}
+.index_nav li {float:left; margin:15px 15px 5px 0;}
+.index_nav li a {display:block; width:230px; height:100px; border:solid 1px #ddd; line-height:100px; text-align:center; font-size:14px; color:#666;}
+.index_nav .icon {margin-right:5px;}
+.index_todo {padding:25px 0;}
+.index_todo a {color:#666;}
+.index_todo a span {font-size:20px; margin:0 5px; font-weight:bold;}
+.index_tab td {text-align:left; width:33%; padding-top:10px;}
+
+
+
+

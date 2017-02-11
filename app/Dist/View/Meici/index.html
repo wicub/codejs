@@ -1,0 +1,79 @@
+<div id="dist_meici_applyIndex">
+    <!-- 搜索条件头 -->
+    <div class="search_bar">
+        <table cellpadding="5" width="100%">
+            <colgroup>
+            	<col width="90px"><col width="180px"><col width="90px"><col width="180px"><col width="90px"><col width="180px"><col width="90px"><col width="180px">
+            </colgroup>
+            <tr>
+                <td class="align_r">商家编号：</td>
+                <td class="align_l"><input type="text" name="product_code" class="form-control" title="商家编号"></td>
+                <td class="align_r">原厂货号：</td>
+                <td class="align_l"><input type="text" name="item_number" class="form-control" title="原厂货号"></td>
+                <td class="align_r meici_sku">美西SKU：</td>
+                <td class="align_l"><input type="text" name="meici_sku" class="form-control meici_sku" title="美西SKU"></td>
+            </tr>
+            <tr>
+                <!-- 搜索的name名必须和数据库中的字段名一致 -->
+                <td class="align_r">品牌：</td>
+                <td class="align_l">
+                    <select class="form-control form-focus" name="brand_id">
+                        <option value="" selected>--请选择--</option>
+                        <foreach name="brands" item="brands">
+                            <option value="{$brands.id}">{$brands.name}</option>
+                        </foreach>
+                    </select>
+                </td>
+				<td class="align_r">分类：</td>
+                <td class="align_l">
+                    <select  class="form-control" name="category_id">
+                        <option value="" selected>--请选择--</option>
+                        <?php  { treeCallBack($categorys,function($vo,$repeat) { ?>
+                        <option value="{$vo.id}"><?php echo str_repeat('&nbsp;',$repeat*4) ?> <?php echo $repeat>0?'└':'';?> {$vo.name}</option>
+                        <?php });  } ?>
+                    </select>
+                </td>
+				<td class="align_r meici_spu">美西SPU：</td>
+                <td class="align_l"><input type="text" name="meici_spu" class="form-control meici_spu" title="美西SPU"></td>
+            </tr>
+            <tr>
+            	<td></td>
+                <td class="align_l">
+                	<button class="btn btn-primary" type="button" onclick="dist_meici.getList(9);"><i class="icon icon-search"></i> 查询</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <ul class="nav nav-tabs" name="status">
+        <li class="active">
+            <a href="" data-toggle="tab" value="1" onclick="dist_meici.getList(1);">未提交</a>
+        </li>
+        <li>
+            <a href="" data-toggle="tab" value="2" onclick="dist_meici.getList(2);">未上架</a>
+        </li>
+        <li>
+            <a href="" data-toggle="tab" value="3" onclick="dist_meici.getList(3);">已下架</a>
+        </li>
+        <li>
+            <a href="" data-toggle="tab" value="4" onclick="dist_meici.getList(4);">已上架</a>
+        </li>
+    </ul>
+    <div class="list_table table_datatab_l"></div>
+
+
+</div>
+<script type="text/javascript" charset="utf-8">
+    modules(['Dist/Meici','Dist/Productsku'],function() {
+        $('#dist_meici_applyIndex .search_bar :input').keyup(function() {
+            if(event.keyCode==13) oms_order.getList();
+        });
+        $('#dist_meici_applyIndex').find('select[name=supplier_id],select[name=brand_id]').chosen({
+            no_results_text: '没有找到',    // 当检索时没有找到匹配项时显示的提示文本
+            disable_search_threshold: 10, // 10 个以下的选择项则不显示检索框
+            width:'100%',
+            search_contains: true         // 从任意位置开始检索
+        });
+        dist_meici.getList(1);
+    });
+
+</script>

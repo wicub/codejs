@@ -1,0 +1,130 @@
+
+<div class="btn_bar mb8">
+    <div class="float_l">
+        <if condition="($meiciStatus eq 1) OR ($meiciStatus eq 2)">
+        <a class="mgL5 mgR8 pointer"><i class="checkable icon icon-check-empty"></i></a>
+        <button class="btn btn-info btn-mini batSetStatus" status="1" onclick="dist_meici.listToCheck();" type="button" title="批量提交至分销">批量提交至审核</button>
+        </if>
+        <if condition="($meiciStatus eq 2)">
+            <button class="btn btn-info btn-mini batSetStatus" status="1" onclick="dist_meici.listToCheck();" type="button" title="取消提交审核">取消提交审核</button>
+        </if>
+        <a class="mgL8 allOpen" href="javascript:void(-1);" title="全部展开"><b>展开</b></a>
+        <a class="mgL8 allClose" href="javascript:void(-1);" title="全部收起"><b>收起</b></a>
+    </div>
+    <div class="pagenation"></div>
+    <div class="clear"></div>
+</div>
+
+<?php if(!empty($errMsg)){ ?>
+<div class="alert alert-warning">{$errMsg}</div>
+<?php } else if(empty($spuList)){ ?>
+<div class="alert alert-warning">无数据显示</div>
+<?php } else { ?>
+	<table class="table datatable prodatatable" cellspacing="0" cellpadding="0">
+		<colgroup>
+			<col width="20px" /><col width="220px" /><col width="20px" /><col width="60px" /><col width="60px" /><if condition="($meiciStatus eq 3) OR ($meiciStatus eq 4)"><col width="80px" /></if><col width="100px" /><col width="150px" /><col width="100px" /><col width="100px" /><col width="100px" />
+		</colgroup>
+		<tr>
+			<th></th><th></th><th></th><th>图片</th><th>SKU</th>
+            <if condition="($meiciStatus eq 3) OR ($meiciStatus eq 4)">
+                <th>美西SKU</th>
+            </if>
+            <th>商家编号</th><th>商品名称</th><th>信息</th><th>当前美西价</th><th>库存</th><th>操作</th>
+		</tr>
+		<?php foreach($spuList as $spu=>$spuInfo) { ?>
+		<tr>
+            <td class="relative">
+                <div class="proSPUinfo">
+                    <button class="btn btn-info btn-mini proSPUclose" type="button" title="展开">展开</button>
+                    <div>SPU：{$spu}</div>
+                    <div>原厂货号：{$spuInfo['item_number']}</div>
+                    <div>品牌:{$brands[$spuInfo['brand_id']]['name']}</div>
+                    <div class="proSPUinfo_m" style="display:none;">
+                        <div>分类:{$categorys[$spuInfo['category_id']]['name']}</div>
+                        <div>材质：<?php echo empty($spuInfo['material'])?'-':$spuInfo['material'];?></div>
+                    </div>
+                    <if condition="($meiciStatus eq 3) OR ($meiciStatus eq 4) OR ($meiciStatus eq 1)">
+                    <div class="proSPUinfo_btn">
+                        <button class="btn btn-info btn-mini" type="button" title="编辑商品" onclick="dist_meici.edit({$spu},{$meiciStatus},{$bill_type});">商品编辑</button>
+                    </div>
+                    </if>
+
+                </div>
+            </td>
+            <td colspan="10">
+                <div class="proSPUclose_m">
+                    <table class="skutable" width="100%" height="100%">
+                        <colgroup>
+                            <col width="20px" /><col width="60px" /><col width="60px" /><if condition="($meiciStatus eq 3) OR ($meiciStatus eq 4)"><col width="80px" /></if><col width="100px" /><col width="150px" /><col width="100px" /><col width="100px" /><col width="100px" />
+                        </colgroup>
+                        <foreach name="spuInfo.sku" item="vo">
+                            <tr data-id="{$vo.id}" data-spu="{$spu}">
+                                <td class="pointer"><i class="icon icon-check-empty"></i></td>
+                                <td><img src="{$vo.imgs}"  width="50px" height="60px" onload="$(this).lightbox();"></td>
+                                <td>{$vo.id}</td>
+                                <if condition="($meiciStatus eq 3) OR ($meiciStatus eq 4)">
+                                    <td>{$vo.meici_sku}</td>
+                                </if>
+                                <td>{$vo.product_code}</td>
+                                <td>{$spuInfo.name}<?php echo $spuInfo['is_cbs']?'<br><span class="label label-badge">境外商品</span>':'';?></td>
+                                <td>
+                                    尺寸：<?php echo empty($sizes[$vo['size_id']]['value'])?'-':$sizes[$vo['size_id']]['value'];?><br>
+                                    颜色：<?php echo empty($colors[$vo['color_id']]['value'])?'-':$colors[$vo['color_id']]['value'];?><br>
+                                </td>
+                                <td>￥{$vo.price}</td>
+                                <td>{$vo.quantity}</td>
+                                <td>
+                                    <if condition="$meiciStatus eq 1">
+                                        <if condition="$vo['meici_status'] eq 0">
+                                            <button class="btn btn-success btn-mini" type="button" title="提交至审核" onclick="dist_meici.setstatus({$vo.id});">提交至审核</button>
+                                        </if>
+									<elseif condition="$meiciStatus eq 2"/>
+                                        <if condition="$vo['meici_status'] eq 1">
+                                            <button class="btn btn-success btn-mini" type="button" title="等待审核" ><!--<i class="icon icon-long-arrow-up"></i>-->等待审核</button>
+                                            <elseif condition="$vo['meici_status'] eq 4"/>
+                                            <button class="btn btn-warning btn-mini" type="button" title="未通过" onclick="dist_meici.looklogs({$vo.spu},'error',{$vo.id});">未通过,点击查看详情</button>
+                                        </if>
+                                    <elseif condition="($meiciStatus eq 3) OR ($meiciStatus eq 4)"/>
+                                        <button class="btn btn-success btn-mini" type="button" title="查看日志" onclick="dist_meici.looklogs({$vo.spu},'info',{$vo.id})">查看日志</button>
+                                    </if>
+                                </td>
+                            </tr>
+                        </foreach>
+                    </table>
+                </div>
+            </td>
+        </tr>
+
+<?php } ?>
+<?php } ?>
+</table>
+<div class="btn_bar mb8">
+    <div class="float_l">
+        <if condition="($meiciStatus eq 1) OR ($meiciStatus eq 2)">
+        <a class="mgL8 mgR8 pointer"><i class="checkable icon icon-check-empty"></i></a>
+        <button class="btn btn-info btn-mini batSetStatus" status="1" onclick="dist_meici.listToCheck();" type="button" title="批量提交至分销">批量提交至分销</button>
+        </if>
+    </div>
+    <input name="current_params" id='current_params' type="hidden" value="{$meiciStatus}">
+    <div class="pagenation"></div>
+    <div class="clear"></div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(function() {
+        $('.pagenation').pagerBar($.parseJSON('{$pagenation|json_encode}'), function(page,pagesize) {
+            dist_meici.getList({$params},{"page":page,"pagesize":pagesize});
+        });
+		
+		$(document).on("click",".prodatatable .pointer",function(){
+			if($(this).hasClass("active")){
+				$(this).parent("tr").find(".skutable").find(".pointer").addClass("active");	
+				$(this).parent("tr").find(".skutable").find(".pointer").children(".icon").removeClass("icon-check-empty").addClass("icon-checked");	
+			}else{
+				$(this).parent("tr").find(".skutable").find(".pointer").removeClass("active");
+				$(this).parent("tr").find(".skutable").find(".pointer").children(".icon").removeClass("icon-checked").addClass("icon-check-empty");
+			}
+		});
+	
+    });
+</script>
+
